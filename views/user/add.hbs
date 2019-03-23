@@ -43,13 +43,16 @@
                     <input type="text" class="form-control" value="User" disabled>
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <input type="radio" name="type" value="admin"
+                            <input type="radio" name="type" value="Admin"
                                 aria-label="Radio button for following text input">
                         </div>
                     </div>
                     <input type="text" class="form-control" value="Admin" disabled>
                 </div>
             </div>
+            {{#if msgError}}
+        <div class="alert alert-danger">{{ msgError }}</div>
+            {{/if}}
             <button type="submit" class="btn btn-success btn-lg btn-block">Submit</button>
         </form>
         <a href="/users">Back to the users list</a>

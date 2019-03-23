@@ -60,3 +60,15 @@ body {
    .notMatch {
      display: none;
    }
+
+   #userPic{
+     border-radius:50px;
+     height: 35px;
+     width: 35px;
+   }
+
+   #userProfile{
+    border-radius:50px;
+    height: 50px;
+    width: 50px;
+  }

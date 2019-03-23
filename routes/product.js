@@ -65,6 +65,8 @@ router.get('/products/edit/:id', (req, res, next) => {
         })
 });
 
+
+
 router.post('/products/uploadImages', uploadCloud.array('photo'), (req, res, next) => {
     const productId = req.body.productId;
     const files = req.files;

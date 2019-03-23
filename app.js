@@ -1,11 +1,18 @@
 require("dotenv").config();
-const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const hbs = require('handlebars');
-const http = require('http');
-const path = require('path');
 const cookieParser = require('cookie-parser');
+const express = require('express');
+const hbs = require('hbs');
+const mongoose = require('mongoose');
+const logger = require('morgan');
+const path = require('path');
+const siteRoutes = require('./routes/index');
+const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
+const passportConfig = require('./config/passport.js');
+const ensureLogin = require("connect-ensure-login");
+const http = require("http");
+
 
 const app = express();
 
@@ -19,6 +26,7 @@ mongoose
     throw new Error(error);
   });
 
+  
 
   // Middleware Setup
 //app.use(logger('dev'));
@@ -35,6 +43,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+// passport and session config
+app.use(passportConfig);
 
 //server connection
 
@@ -76,3 +88,5 @@ var product = require('./routes/product');
 app.use('/', product);
 var order = require('./routes/order')
 app.use('/', order);
+var auth = require('./routes/auth')
+app.use('/', auth);
