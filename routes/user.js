@@ -18,7 +18,7 @@ router.get('/user/add', (req,res,next)=>{
 })
 
 
-router.post("/users/add", ensureLogin.ensureLoggedIn(), uploadCloud.single('imageUrl'), (req, res, next) => {
+router.post("/user/add", ensureLogin.ensureLoggedIn(), uploadCloud.single('imageUrl'), (req, res, next) => {
     const {
       name,
       email,
@@ -63,6 +63,7 @@ router.post("/users/add", ensureLogin.ensureLoggedIn(), uploadCloud.single('imag
         email,
         password: hashPass,
         imageUrl,
+        type,
         token
       });
   
