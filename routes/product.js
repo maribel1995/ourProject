@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 
-router.get('/users', (req, res, next) => {
-    res.render('user/users');
+router.get('/products', (req, res, next) => {
+    res.render('product/products');
 })
 
 
