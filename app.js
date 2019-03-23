@@ -50,3 +50,5 @@ server.listen(process.env.PORT, () => {
 
 var index = require ('./routes/index');
 app.use('/', index);
+var user = require('./routes/user');
+app.use('/', user);
