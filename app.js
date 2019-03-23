@@ -1,14 +1,24 @@
 require("dotenv").config();
 const express = require('express');
-const bodyparser = require('body-parser');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const hbs = require('handlebars');
 const http = require('http');
 const path = require('path')
-
-
-
 const app = express();
+
+
+
+//conection mongo
+mongoose
+  .connect(process.env.MONGODB_URI, {useNewUrlParser: true})
+  .then(x => {
+    console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`);
+  })
+  .catch(error => {
+    throw new Error(error);
+  });
+
 
 
 // Engine do HBS
@@ -42,7 +52,8 @@ server.listen(process.env.PORT, () => {
     console.log(`Listening on http://localhost:${process.env.PORT}`);
 })
 
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //End Server Setup
 
