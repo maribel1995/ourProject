@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const hbs = require('handlebars');
 const http = require('http');
-const path = require('path')
-const app = express();
+const path = require('path');
+const cookieParser = require('cookie-parser');
 
 
 
@@ -18,6 +18,26 @@ mongoose
   .catch(error => {
     throw new Error(error);
   });
+
+
+
+mongoose
+  .connect(process.env.MONGODB_URI, {useNewUrlParser: true})
+  .then(x => {
+    console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`);
+  })
+  .catch(error => {
+    throw new Error(error);
+  });
+
+
+  // Middleware Setup
+//app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+// app.use(envInjector);
 
 
 
