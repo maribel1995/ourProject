@@ -1,1 +1,20 @@
-<h1>Products</h1>
+<div class="container">
+    <h1>Products</h1>
+    <hr>
+    <div class="d-flex p-2 flex-wrap">
+        {{#each products}}
+        <a href="/products/edit/{{this._id}}">
+            <div class="card m-4" style="width: 12rem;">
+                <div class="card-img-top"
+                    style="background-image:url({{this.images.[0]}}); background-size: cover; width: 12rem; height: 120px;">
+                </div>
+
+                <div class="card-body">
+                    <p class="card-text">{{this.name}}</p>
+                    <p class="card-text"><a href="#1">Owner</a></p>
+                </div>
+            </div>
+        </a>
+        {{/each}}
+    </div>
+</div>
