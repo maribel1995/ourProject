@@ -7,6 +7,15 @@ const uploadCloud = require('../config/cloudinary.js');
 const nodemailer = require('nodemailer');
 const ensureLogin = require("connect-ensure-login");
 
+let transporter = nodemailer.createTransport({
+    host: process.env.MAILHOST,
+    port: process.env.MAILPORT,
+    auth: {
+      user: process.env.MAILTRAPUSER,
+      pass: process.env.MAILTRAPPASSWD
+    }
+  });
+
 
 router.get('/users', (req, res, next) => {
     res.render('user/users');
@@ -18,7 +27,7 @@ router.get('/user/add', (req,res,next)=>{
 })
 
 
-router.post("/user/add", ensureLogin.ensureLoggedIn(), uploadCloud.single('imageUrl'), (req, res, next) => {
+router.post("/user/add",  uploadCloud.single('imageUrl'), (req, res, next) => {
     const {
       name,
       email,
@@ -72,14 +81,14 @@ router.post("/user/add", ensureLogin.ensureLoggedIn(), uploadCloud.single('image
       newUser.save()
       .then(user => {
         transporter.sendMail({
-          from: '"Rooms App" <noreply@roomsapp.com>',
+          from: '"Ichange" <noreply@roomsapp.com>',
           to: email, 
-          subject: 'please, confirm your email - rooms app', 
+          subject: 'please, confirm your email - ichange', 
           // text: message,
           html: `<b>${emailHTMLBody}</b>`
         })
         .then(info => res.redirect('/'))
-        .catch(err => { throw new Error(error)})
+        .catch(err => { throw new Error(err)})
       })
       .catch(err => { throw new Error(err)});
     })
@@ -87,6 +96,62 @@ router.post("/user/add", ensureLogin.ensureLoggedIn(), uploadCloud.single('image
   
 });
 
+
+router.get('/confirm/:token', (req, res) => {
+    const { token } = req.params;
+  
+    User.findOneAndUpdate({ token }, {$set: {status: 'active'}}, { new: true })
+    .then(user => {
+      // if (user.status === 'active') res.status(500).send('user already confirmed');
+  
+      (user) ? res.render("user/confirmation", { user }) : res.status(500).send('user not found');
+    })
+    .catch(err => { throw new Error(err) });
+  
+  });
+  
+  router.get('/send/confirmation', (req, res) => {
+    res.render("user/confirmation-send");
+  });
+  
+  router.post('/send/confirmation', (req, res) => {
+    const { email } = req.body;
+  
+    User.findOne({ email })
+    .then(user => {
+      if (!user) res.render("user/confirmation-send", { msgError: 'user not found' });
+      
+      let emailHTMLBody = `please confirm your email, click <a href="http://localhost:3000/confirm/${user.token}">here</a>`;
+  
+      transporter.sendMail({
+        from: '"Ichange" <noreply@ichange.com>',
+        to: user.email, 
+        subject: 'please, confirm your email - ichange.com', 
+        // text: message,
+        html: `<b>${emailHTMLBody}</b>`
+      })
+      .then(info => res.render("user/confirmation-send", { msgError: 'a new email confirmation has been sent' }))
+      .catch(err => { throw new Error(err)})
+      
+    })
+    .catch(err => { throw new Error(err) });
+  
+  });
+  
+
+
+  router.get('/user/:id', (req,res,next) =>{
+    
+    let userId = req.params.id;
+    if (!/^[0-9a-fA-F]{24}$/.test(userId)) return res.status(404).send('not-found');
+    User.findOne({ _id: userId })
+      .then(user => {
+        res.render("user/profile", { user } );
+      })
+      .catch(error => {
+        throw new Error(error);
+      });
+  });
 
 
 

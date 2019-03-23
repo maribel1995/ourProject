@@ -22,16 +22,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item {{#if pageHome}}active{{/if}}">
-                        <a class="nav-link" href="/">Finder</a>
-                    </li>
-                    <li class="nav-item {{#if pageBooks}}active{{/if}}">
-                        <a class="nav-link" href="/buddies">Find Buddies</a>
+                        <a class="nav-link" href="/">iChange</a>
                     </li>
                 </ul>
 
                 <div class="mt-2 mt-md-0">
                     {{#if currentUser}}
-                        Hey, {{ currentUser.fullName }}
+                        Hey, <a href='/user/{{currentUser._id}}'>{{ currentUser.name }}</a> <img src='{{currentUser.imageUrl}}' id='userPic'>
                         <a href="/logout" class="btn btn-danger btn-sm ml-2">logout</a>
                     {{else}}
                         <a href="/login" class="btn btn-success btn-sm">login</a>
