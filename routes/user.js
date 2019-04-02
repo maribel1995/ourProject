@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const Product = require('../models/product');
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 const uploadCloud = require('../config/cloudinary.js');
@@ -17,8 +18,15 @@ let transporter = nodemailer.createTransport({
   });
 
 
-router.get('/users', (req, res, next) => {
-    res.render('user/users');
+router.get('/users',ensureLogin.ensureLoggedIn(), (req, res, next) => {
+  User.find().sort({status:1})
+    .then(users => {
+      
+      res.render("user/users", { users });
+    })
+    .catch(error => {
+      throw new Error(error);
+    });
 })
 
 
@@ -81,7 +89,7 @@ router.post("/user/add",  uploadCloud.single('imageUrl'), (req, res, next) => {
       newUser.save()
       .then(user => {
         transporter.sendMail({
-          from: '"Ichange" <noreply@roomsapp.com>',
+          from: '"Ichange" <noreply@ichange.com>',
           to: email, 
           subject: 'please, confirm your email - ichange', 
           // text: message,
@@ -144,9 +152,20 @@ router.get('/confirm/:token', (req, res) => {
     
     let userId = req.params.id;
     if (!/^[0-9a-fA-F]{24}$/.test(userId)) return res.status(404).send('not-found');
+
+    let loggedUser = req.user._id.equals(userId);
+
     User.findOne({ _id: userId })
       .then(user => {
-        res.render("user/profile", { user } );
+
+        Product.find({owner:userId})
+        .then( products =>{
+          res.render("user/profile", { user, loggedUser,products } );
+        })
+        .catch(error => {
+          throw new Error(error);
+        })
+        
       })
       .catch(error => {
         throw new Error(error);
@@ -154,5 +173,89 @@ router.get('/confirm/:token', (req, res) => {
   });
 
 
+  router.get("/user/edit/:id", ensureLogin.ensureLoggedIn(), (req, res, next) => {
+    const userId = req.params.id
+  
+    User.findOne({ _id: userId })
+      .then(user => {
+        console.log(`${req.user}`);
+        if (user._id.equals(req.user._id)) {
+          res.render("user/edit", { user });
+        } else {
+          // no access for you!
+          res.redirect(`/user/${user._id}`);
+        }
+        
+      })
+      .catch(error => {
+        throw new Error(error);
+      });
+});
+
+router.post("/user/edit", ensureLogin.ensureLoggedIn(), uploadCloud.single('imageUrl'), (req, res, next) => {
+  let { name, email, password, userId} = req.body;
+
+  let updateData = {
+    name
+    
+  }
+
+  if(email){
+    updateData.email = email; 
+  }
+
+
+  if (password) {
+    const salt = bcrypt.genSaltSync(bcryptSalt);
+    const hashPass = bcrypt.hashSync(password, salt);
+
+    password = hashPass;
+
+    updateData.password = password;
+
+  }
+
+
+
+
+  let imageUrl = '';
+  if (req.file) {
+    imageUrl = req.file.url;
+    updateData.imageUrl = req.file.url;
+  }
+
+  User.findOneAndUpdate(
+    { _id: userId },
+    { $set: updateData} ,
+    { new: true } 
+  )
+    .then(user => {
+      console.log(user)
+      res.redirect(`/users`);
+    })
+    .catch(error => {
+      throw new Error(error);
+    });
+});
+
+
+router.get("/user/delete/:id", ensureLogin.ensureLoggedIn(), (req, res, next) => {
+  let userId = req.params.id;
+  if (!/^[0-9a-fA-F]{24}$/.test(userId)) return res.status(404).send('not-found');
+  User.deleteOne({ _id: userId })
+    .then(user => {
+      Product.deleteMany({owner:userId})
+      .then(products =>{
+        res.redirect("/users");
+      })
+      .catch(error => {
+        throw new Error(error);
+    });
+          
+    })
+    .catch(error => {
+      throw new Error(error);
+  });
+});
 
 module.exports = router;
