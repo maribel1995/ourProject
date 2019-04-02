@@ -11,7 +11,8 @@
 
                 <div class="card-body">
                     <p class="card-text">{{this.name}}</p>
-                    <p class="card-text"><a href="#1">Owner</a></p>
+                    {{this.category}}
+                    <p class="card-text"><a href="/user/{{this.owner._id}}">{{this.owner.name}}</a></p>
                 </div>
             </div>
         </a>

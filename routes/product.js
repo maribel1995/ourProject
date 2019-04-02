@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
 const uploadCloud = require('../config/cloudinary.js');
+const ensureLogin = require("connect-ensure-login");
 
 
 
 router.get('/products', (req, res, next) => {
-    Product.find()
+    Product.find().populate('owner')
         .then(products => {
 
             res.render('product/products', {
@@ -22,13 +23,13 @@ router.get('/products/add', (req, res, next) => {
     res.render('product/add');
 });
 
-router.post('/products/add', uploadCloud.array('photo'), (req, res, next) => {
+router.post('/products/add',ensureLogin.ensureLoggedIn(), uploadCloud.array('photo'), (req, res, next) => {
     const files = req.files;
     const images = new Array();
     const {
         name,
         description,
-        //owner,
+        owner,
         category,
         stared,
     } = req.body;
@@ -40,11 +41,12 @@ router.post('/products/add', uploadCloud.array('photo'), (req, res, next) => {
     const newProduct = new Product({
         name,
         description,
-        //owner,
+        owner,
         category,
         stared,
         images
     });
+    
     newProduct.save()
         .then((product) => {
             res.redirect('/products');

@@ -72,3 +72,14 @@ body {
     height: 50px;
     width: 50px;
   }
+
+  .video{
+    position: relative;
+    top: 0;
+    right: 0;
+    width: 100%;
+    object-fit: cover;
+    opacity: 0.75;
+    height: auto;
+    min-height: 560px;
+  }
