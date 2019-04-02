@@ -72,3 +72,11 @@ body {
     height: 50px;
     width: 50px;
   }
+
+  .product-infos{
+    margin: 20px 0 20px 20px; 
+  }
+  .category{
+    color: #696969;
+    /*font-size: rem;*/
+  }

@@ -30,7 +30,7 @@ router.post('/products/add', uploadCloud.array('photo'), (req, res, next) => {
         description,
         //owner,
         category,
-        stared,
+        stared
     } = req.body;
 
     files.forEach(file => {
@@ -65,6 +65,48 @@ router.get('/products/edit/:id', (req, res, next) => {
         })
 });
 
+router.post('/products/edit', (req, res, next) => {
+    const {
+        name,
+        description,
+        //owner,
+        category,
+        stared,
+        productId
+    } = req.body;
+
+    Product.update({
+            _id: productId
+        }, {
+            $set: {
+                name,
+                description,
+                category,
+                stared
+            }
+        }, {
+            new: true
+        })
+        .then(product => {
+            res.redirect('/products')
+        })
+        .catch(error => {
+            throw new Error(error)
+        });
+});
+
+router.get('/products/perfil/:id', (req, res, next) => {
+    Product.findOne({
+        _id: req.params.id
+    })
+    .then(product => {
+
+        res.render('product/perfil', {
+            product
+        })
+    })
+})
+
 
 
 router.post('/products/uploadImages', uploadCloud.array('photo'), (req, res, next) => {
@@ -74,21 +116,30 @@ router.post('/products/uploadImages', uploadCloud.array('photo'), (req, res, nex
 
     files.forEach(file => {
         images.push(file.url);
-    });
+    })
     Product.update({
-        _id: productId
-    }, {
-        $set: {
-            images
-        }
-    }, {
-        new: true
-    })
-    .then(product =>{
-        res.redirect(`/products/edit/${productId}`)
-    })
-    .catch(err => {throw new Error(err)})
+            _id: productId
+        }, {
+            $set: {
+                images
+            }
+        }, {
+            new: true
+        })
+        .then(product => {
+            res.redirect(`/products/edit/${productId}`)
+        })
+        .catch(err => {
+            throw new Error(err)
+        })
+
+
+
+
+
 })
+
+
 
 
 module.exports = router;

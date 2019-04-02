@@ -17,24 +17,27 @@
             <input type="text" name="category" class="form-control" id="productCategory"
                 aria-describedby="productCategory" value="{{product.category}}">
         </div>
+        <input type="hidden" name="productId" value="{{product._id}}" />
     </form>
 
     <form action="/products/uploadImages" method="POST" enctype='multipart/form-data'>
-            <div class="form-group">
-                <label for="exampleFormControlFile1">Choose your product images</label>
-                <input type="file" name="photo" class="form-control-file" id="exampleFormControlFile1" multiple>
-                <input type="hidden" name="productId" value="{{product._id}}" />
-            </div>
-            <button type="submit" class="btn btn-primary">Upload</button>
-        </form>
-        <div class="d-flex flex-wrap">
-            {{#each product.images}}
-            <div class="card-img-top m-2 p-2"
-                style="background-image:url({{this}}); background-size: cover; width: 12rem; height: 120px;">
-            </div>
-            {{/each}}
-        </div>
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Choose your product images</label>
 
-        <button type="submit" form="editProduct" class="btn btn-primary">Save</button>
+            <input type="file" name="photo" class="form-control-file" id="exampleFormControlFile1" multiple>
+
+            <input type="hidden" name="productId" value="{{product._id}}" />
+            <button type="submit" class="btn btn-primary m-2 p-2">Upload</button>
+
+        </div>
+    </form>
+    <div class="d-flex flex-wrap">
+        {{#each product.images}}
+        <div class="card-img-top m-2 p-2"
+            style="background-image:url({{this}}); background-size: cover; width: 12rem; height: 120px;">
+        </div>
+        {{/each}}
+    </div>
+    <button type="submit" form="editProduct" class="btn btn-primary m-2 p-2">Save</button>
 
 </div>
