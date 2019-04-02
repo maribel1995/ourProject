@@ -2,9 +2,26 @@
 <div class="box">
     <div class="container">
         <h1><img src='{{user.imageUrl}}' id='userProfile'> {{user.name}}</h1>
-         <a href="/user/edit" class="btn btn-secondary btn-sm">Edit Profile</a>
+        {{#if loggedUser}}
+         <a href="/user/edit/{{user._id}}" class="btn btn-secondary btn-sm">Edit Profile</a>
+         <a href="/user/delete/{{user._id}}" class="btn btn-danger btn-sm">Delete Account</a>
+         {{/if}}
         <hr>
         <h2>My Products</h2>
+             {{#each products}}
+        <a href="/products/edit/{{this._id}}">
+            <div class="card m-4" style="width: 12rem;">
+                <div class="card-img-top"
+                    style="background-image:url({{this.images.[0]}}); background-size: cover; width: 12rem; height: 120px;">
+                </div>
 
+                <div class="card-body">
+                    <p class="card-text">{{this.name}}</p>
+                    {{this.category}}
+                    <p class="card-text"><a href="/user/{{this.owner._id}}">{{this.owner.name}}</a></p>
+                </div>
+            </div>
+        </a>
+        {{/each}}
      </div>
 </div>

@@ -10,9 +10,10 @@
                 </div>
 
                 <div class="card-body">
-                   <a href="/products/edit/{{this._id}}"><p class="card-text">Editar</p></a>
-                   <a href="/products/perfil/{{this._id}}"> <p class="card-text">{{this.name}}</p></a>
-                    <p class="card-text"><a href="#perfilOwner">Owner</a></p>
+                    <p class="card-text">{{this.name}}</p>
+                    {{this.category}}
+                    <p class="card-text"><a href="/user/{{this.owner._id}}">{{this.owner.name}}</a></p>
+
                 </div>
             </div>
         
