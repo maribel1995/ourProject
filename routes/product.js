@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
+const Question = require('../models/question');
 const uploadCloud = require('../config/cloudinary.js');
 const ensureLogin = require("connect-ensure-login");
 
@@ -100,6 +101,12 @@ router.post('/products/edit', (req, res, next) => {
 router.get('/products/perfil/:id', (req, res, next) => {
     Product.findOne({
         _id: req.params.id
+    })
+    .populate({
+        path:'questions',
+        populate: {
+            path:'user'
+        }
     })
     .then(product => {
 
