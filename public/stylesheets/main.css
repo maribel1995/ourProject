@@ -67,6 +67,12 @@ body {
      width: 35px;
    }
 
+   .userPic{
+    border-radius:50px;
+    height: 35px;
+    width: 35px;
+  }
+
    #userProfile{
     border-radius:50px;
     height: 50px;
@@ -79,8 +85,7 @@ body {
   .category{
     color: #696969;
     /*font-size: rem;*/
-<<<<<<< HEAD
-=======
+
   }
   .video{
     position: relative;
@@ -91,5 +96,50 @@ body {
     opacity: 0.75;
     height: auto;
     min-height: 560px;
->>>>>>> 34bba63787ae3cbfbd9d202000098c53d8be420d
+
+  }
+
+  
+
+  .star{
+    color: goldenrod;
+    font-size: 35px;
+    padding: 1px; /* space out the stars */
+  }
+  .star::before{
+    content: '\2606';    /* star outline */
+    cursor: pointer;
+  }
+  .star.rated::before{
+    /* the style for a selected star */
+    content: '\2605';  /* filled star */
+  }
+  
+  .stars{
+      counter-reset: rateme 0;   
+      font-size: 2.0rem;
+      font-weight: 1100;
+  }
+  .star.rated{
+      counter-increment: rateme 1;
+  }
+  /* .stars::after{
+      content: counter(rateme) '/5';
+  } */
+
+  
+  .singleStar{
+    color: goldenrod;
+    font-size: 25px;
+    padding: 1px; /* space out the stars */
+  }
+  .singleStar::before{
+    content: '\2605';    /* star outline */
+    cursor: pointer;
+  }
+
+  .rating{
+    color: goldenrod;
+    font-size: 20px;
+    padding: 1px; /* space out the stars */
   }
