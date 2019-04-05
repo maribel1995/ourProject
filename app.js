@@ -86,6 +86,8 @@ var user = require('./routes/user');
 app.use('/', user);
 var product = require('./routes/product');
 app.use('/', product);
+var question = require('./routes/question');
+app.use('/', question);
 var order = require('./routes/order')
 app.use('/', order);
 var auth = require('./routes/auth')
