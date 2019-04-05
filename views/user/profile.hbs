@@ -2,6 +2,8 @@
 <div class="box">
     <div class="container">
         <h1><img src='{{user.imageUrl}}' id='userProfile'> {{user.name}}</h1>
+        {{#if avgRating}}
+        <span class="rating ">{{avgRating}}<span class="singleStar">&nbsp;</span></span>{{/if}}<i class="far fa-envelope"  style="font-size: 30px; margin-right:10px;"></i><i class="fab fa-facebook-f"  style="font-size: 30px; margin-right:10px;"></i><i class="fas fa-phone"   style="font-size: 30px;"></i>
         {{#if loggedUser}}
          <a href="/user/edit/{{user._id}}" class="btn btn-secondary btn-sm">Edit Profile</a>
          <a href="/user/delete/{{user._id}}" class="btn btn-danger btn-sm">Delete Account</a>
@@ -9,7 +11,7 @@
         <hr>
         <h2>My Products</h2>
              {{#each products}}
-        <a href="/products/edit/{{this._id}}">
+        <a href="/products/perfil/{{this._id}}">
             <div class="card m-4" style="width: 12rem;">
                 <div class="card-img-top"
                     style="background-image:url({{this.images.[0]}}); background-size: cover; width: 12rem; height: 120px;">
@@ -18,10 +20,44 @@
                 <div class="card-body">
                     <p class="card-text">{{this.name}}</p>
                     {{this.category}}
-                    <p class="card-text"><a href="/user/{{this.owner._id}}">{{this.owner.name}}</a></p>
+                    <p class="card-text"><a href="/products/perfil/{{this.owner._id}}">{{this.owner.name}}</a></p>
                 </div>
             </div>
         </a>
         {{/each}}
-     </div>
+    
+     <hr>     
+        <h2>Leave a Review</h2>
+        <form method="post" action="/user/review">
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">How was your experience with <strong>{{user.name}}</strong>?</label>
+      <div class="stars" data-rating="5">
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+        <input type="hidden" name="rating" id="rating"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Leave your comments</label>
+    <textarea class="form-control" id="comments" name="comments" rows="3"></textarea>
+  </div>
+  <input type="hidden" name="userId" value="{{user._id}}"/>
+  <button type="submit" class="btn btn-primary mb-2">Send Rating</button>
+</form>
+
+<hr>
+<h2>Reviews</h2>
+  {{#each reviews}}
+
+  
+     <h5><img src="{{this.sender.imageUrl}}" class="userPic" width="35" height="35"/> {{this.sender.name}}</h5>
+      <span class="rating">{{this.rating}}.0</span><span class="singleStar">&nbsp;</span><p>{{this.comments}}</p>
+      
+    <hr>
+    
+  {{/each}}
+    </div>
 </div>

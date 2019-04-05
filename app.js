@@ -9,6 +9,7 @@ const path = require('path');
 const siteRoutes = require('./routes/index');
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
+const reviewRoutes = require('./routes/review')
 const passportConfig = require('./config/passport.js');
 const ensureLogin = require("connect-ensure-login");
 const http = require("http");
@@ -86,7 +87,9 @@ var user = require('./routes/user');
 app.use('/', user);
 var product = require('./routes/product');
 app.use('/', product);
-var order = require('./routes/order')
+var order = require('./routes/order');
 app.use('/', order);
-var auth = require('./routes/auth')
+var auth = require('./routes/auth');
 app.use('/', auth);
+var review = require('./routes/review');
+app.use('/', review);
