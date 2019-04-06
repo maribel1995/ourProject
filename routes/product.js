@@ -9,9 +9,12 @@ const Order = require('../models/order');
 
 
 router.get('/products',ensureLogin.ensureLoggedIn(), (req, res, next) => {
-    Product.find({owner:{$ne:req.user._id}}).populate('owner').sort({createdAt:-1})
-        .then(products => {
 
+    
+    Product.find({owner:{$eq:req.user._id}}).populate('owner').sort({createdAt:-1})
+        
+        .then(products => {
+            
             res.render('product/products', {
                 products
             });
@@ -118,7 +121,7 @@ router.get('/products/perfil/:id',ensureLogin.ensureLoggedIn(), (req, res, next)
         .then(product => {
     
             res.render('product/perfil', {
-                product, products
+                product, products, loggedUser
             })
         })
         .catch(err => {throw new Error(err)});    
@@ -154,10 +157,23 @@ router.post('/products/uploadImages', uploadCloud.array('photo'), (req, res, nex
         })
 
 
+});
 
 
-
-})
+router.get("/products/delete/:id", ensureLogin.ensureLoggedIn(), (req, res, next) => {
+    let productId = req.params.id;
+    if (!/^[0-9a-fA-F]{24}$/.test(productId)) return res.status(404).send('not-found');
+    Product.deleteOne({ _id: productId })
+      .then(user => {
+       
+          res.redirect("/products");
+        
+            
+      })
+      .catch(error => {
+        throw new Error(error);
+    });
+  });
 
 
 

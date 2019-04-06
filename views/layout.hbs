@@ -27,12 +27,14 @@
                        <strong> <a class="nav-link" href="/">iChange</a></strong>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/products">Products</a>
+                        <a class="nav-link" href="/products">My Products</a>
                     </li>
-                     {{#if currentUser}}
+                    {{#if admin}}
                     <li class="nav-item active">
                         <a class="nav-link" href="/users">Users</a>
                     </li>
+                    {{/if}}
+                     {{#if currentUser}}
                     <li class="nav-item active">
                         <a class="nav-link" href="/orders">Requests</a>
                     </li>
