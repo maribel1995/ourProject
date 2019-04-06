@@ -19,9 +19,12 @@ let transporter = nodemailer.createTransport({
 
 
 router.get('/orders', ensureLogin.ensureLoggedIn(), (req, res, next) => {
-  Order.find({ requester: req.user._id }).populate('requester').populate('bider').populate('requestedProduct').populate('biderProduct')
+  Order.find({ $or: [{ requester: req.user._id }, { bider: req.user._id }] }).populate('requester').populate('bider').populate('requestedProduct').populate('biderProduct')
     .then(orders => {
-      res.render('order/orders', { orders });
+      let sent = orders.filter(item => item.requester._id.equals(req.user._id));
+      let received = orders.filter(item => item.bider._id.equals(req.user._id));
+
+      res.render('order/orders', { sent, received, orders });
     })
     .catch(err => { throw new Error(err) })
 
@@ -54,11 +57,12 @@ router.post('/request', ensureLogin.ensureLoggedIn(), (req, res, next) => {
   }
   let date = new Date();
   let protocol = date.getYear() + (date.getMonth() + 1) + date.getDay() + token.toUpperCase();
-  Order.findOne({ $or: [
-        { $and: [{ requestedProduct: productId }, { biderProduct: chosenProduct }] },
-        { $and: [{ requestedProduct: chosenProduct }, { biderProduct: productId }] }
-      ]
-    }).populate('requester').populate('bider').populate('requestedProduct').populate('biderProduct')
+  Order.findOne({
+    $or: [
+      { $and: [{ requestedProduct: productId }, { biderProduct: chosenProduct }] },
+      { $and: [{ requestedProduct: chosenProduct }, { biderProduct: productId }] }
+    ]
+  }).populate('requester').populate('bider').populate('requestedProduct').populate('biderProduct')
     .then(orderCheck => {
       if (orderCheck === null) {
         console.log('Isto é executado ' + orderCheck + ' requested product' + productId + ' chosen' + chosenProduct);
@@ -94,7 +98,7 @@ router.post('/request', ensureLogin.ensureLoggedIn(), (req, res, next) => {
       } else {
         console.log("Order Check " + orderCheck);
 
-        if(orderCheck.requestedProduct._id.equals(productId) && orderCheck.biderProduct._id.equals(chosenProduct)) {
+        if (orderCheck.requestedProduct._id.equals(productId) && orderCheck.biderProduct._id.equals(chosenProduct)) {
           res.redirect(`/order/${orderCheck._id}`);
           return;
         }
