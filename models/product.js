@@ -7,7 +7,8 @@ const productSchema = new Schema({
     owner: {type: Schema.Types.ObjectId, ref:'User'},
     category: String,
     stared: {type: Boolean, default: false},
-    images: [String]
+    images: [String],
+    questions: [{type: Schema.Types.ObjectId, ref:'Question'}]
 }, {
   timestamps: true
 });
