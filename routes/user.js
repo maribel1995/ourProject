@@ -169,8 +169,8 @@ router.get('/confirm/:token', (req, res) => {
               
               return a += c.rating;              
             },0);
-            console.log(totalReviews);
-            let avgRating = totalReviews/reviews.length;
+            
+            let avgRating = (totalReviews/reviews.length).toFixed(2);
               
               res.render("user/profile", { user, loggedUser,products,reviews,avgRating} );
             })
@@ -193,7 +193,7 @@ router.get('/confirm/:token', (req, res) => {
   
     User.findOne({ _id: userId })
       .then(user => {
-        console.log(`${req.user}`);
+        
         if (user._id.equals(req.user._id)) {
           res.render("user/edit", { user });
         } else {
@@ -245,7 +245,7 @@ router.post("/user/edit", ensureLogin.ensureLoggedIn(), uploadCloud.single('imag
     { new: true } 
   )
     .then(user => {
-      console.log(user)
+      
       res.redirect(`/users`);
     })
     .catch(error => {

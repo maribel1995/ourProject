@@ -27,7 +27,25 @@
         <div class="product-infos">
             <p class="font-weight-bold">description:</p>
             <p>{{product.description}}</p>
-            <button class="btn btn-lg btn-success">Bid</button>
+            {{#if products}}
+            <form action="/request" method="post">
+                <div class="form-group">
+                 <label for="exampleInputEmail1">Select a product to Bid</label>
+                <select name="chosenProduct"  class="form-control">
+                    <option value="">Select-</option>
+                    {{#each products}}
+                    <option value="{{this._id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+                <input type="hidden" name="productId" value="{{product._id}}"/>
+                </div>
+               <div class="form-group">
+                <input type="submit" class="btn btn-lg btn-success form-control" value="Bid"/>
+                </div>
+            </form>
+            {{else}}
+            Do you want this product? <a href="/login">LogIn Here</a>
+            {{/if}}
         </div>
     </div>
    

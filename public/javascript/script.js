@@ -1,3 +1,10 @@
+$body = $("body");
+
+$(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+     ajaxStop: function() { $body.removeClass("loading"); }    
+});
+
 document.addEventListener('DOMContentLoaded', function(){
     let stars = document.querySelectorAll('.star');
     stars.forEach(function(star){
@@ -28,3 +35,10 @@ function setRating(ev){
     document.querySelector('.stars').setAttribute('data-rating', num);
     document.querySelector('#rating').setAttribute('value', num)
 }
+
+$( ".fa-heart" ).click(function() {
+     $( this ).css("color","red");
+  });
+
+
+ 
