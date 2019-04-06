@@ -117,7 +117,7 @@ router.get('/products/perfil/:id',ensureLogin.ensureLoggedIn(), (req, res, next)
         populate: {
             path:'user'
         }
-    })
+    }).populate('owner')
         .then(product => {
             let authUser = req.user._id.equals(product.owner);
             console.log(authUser);
