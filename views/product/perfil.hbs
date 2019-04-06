@@ -1,6 +1,10 @@
 <div class="container" style="width: 720px;">
     <h2>{{product.name}}</h2>
     <p class="category font-weight-bold">{{product.category}}</p>
+    {{#if loggedUser}}
+        <a href="/products/edit/{{product._id}}" class="btn btn-secondary btn-sm">Edit Product</a>
+         <a href="/products/delete/{{product._id}}" class="btn btn-danger btn-sm">Delete Product</a>
+    {{/if}}
     <hr>
     <div class="d-flex" >
         <div class="carrosel">
@@ -25,7 +29,7 @@
             </div>
         </div>
         <div class="product-infos">
-            <p class="font-weight-bold">description:</p>
+            <p class="font-weight-bold">Description:</p>
             <p>{{product.description}}</p>
             {{#if products}}
             <form action="/request" method="post">
@@ -44,7 +48,7 @@
                 </div>
             </form>
             {{else}}
-            Do you want this product? <a href="/login">LogIn Here</a>
+            Do you want this product? <a href="/products/add">Create a product first</a>
             {{/if}}
         </div>
     </div>

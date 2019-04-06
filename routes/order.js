@@ -74,7 +74,7 @@ router.post('/request', ensureLogin.ensureLoggedIn(), (req, res, next) => {
             });
             // console.log(newOrder);
 
-            let emailHTMLBody = req.user.name + ` is interested in your product, click here to see some products of your interest <a href="${process.env.APP_HOST}/order/${newOrder._id}">here</a>`;
+            let emailHTMLBody = req.user.name + ` is interested in your ${product.name} click here to see the details of your bid <a href='${process.env.APP_HOST}/order/${newOrder._id}'>here</a>`;
 
             newOrder.save()
               .then(order => {
