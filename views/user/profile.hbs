@@ -27,6 +27,7 @@
         </a>
         {{/each}}
     </div>
+    {{#unless loggedUser}}
      <hr>     
         <h2>Leave a Review</h2>
         <form method="post" action="/user/review">
@@ -48,7 +49,7 @@
   <input type="hidden" name="userId" value="{{user._id}}"/>
   <button type="submit" class="btn btn-primary mb-2">Send Rating</button>
 </form>
-
+{{/unless}}
 <hr>
 <h2>Reviews</h2>
   {{#each reviews}}

@@ -114,7 +114,7 @@ router.get('/products/perfil/:id',ensureLogin.ensureLoggedIn(), (req, res, next)
         populate: {
             path:'user'
         }
-    })
+    }).populate('owner')
         .then(product => {
     
             res.render('product/perfil', {

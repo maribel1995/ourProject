@@ -172,6 +172,9 @@ router.get('/confirm/:token', (req, res) => {
             
             let avgRating = (totalReviews/reviews.length).toFixed(2);
               
+            if(totalReviews == 0){
+              avgRating = false;
+            }
               res.render("user/profile", { user, loggedUser,products,reviews,avgRating} );
             })
             .catch(err => { throw new Error(err)});
