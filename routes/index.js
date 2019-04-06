@@ -6,9 +6,11 @@ const Product = require('../models/product');
 //Index
 
 router.get('/', (req, res, next) => {
-    Product.find().populate('owner').sort({ createdAt: -1 })
+    let filter = (req.user) ? { owner: { $ne: req.user._id } } : {};
+
+    Product.find(filter).populate('owner').sort({ createdAt: -1 })
         .then(products => {
-            Product.find().distinct('category')
+            Product.find(filter).distinct('category')
                 .then(categories => {
                     categories.sort();
 
