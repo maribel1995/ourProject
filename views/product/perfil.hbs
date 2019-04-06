@@ -48,4 +48,36 @@
             {{/if}}
         </div>
     </div>
+   
 </div>
+ <div class="container">
+<div class="container-fluid">
+            <p class="lead">Questions about this product</p>
+        {{#each product.questions}}
+        <div class="card" style="margin-bottom: 10px;">
+            <h5 class="card-header">
+                <img class="img-thumbnail" style="width: 50px; height:50px" src="{{this.user.imageUrl}}">
+                {{this.user.name}}</h5>
+
+            <div class="card-body">
+                <p class="card-text">{{this.comment}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+     <hr>
+        <p class="lead">Ask whatever you want!</p>
+        <form action="/question" method="POST">
+            <input type="hidden" name="productId" value="{{product._id}}">
+            <div class="form-group">
+                <div class="input-group">
+                    <textarea class="form-control" name="comment" style="min-height: 80px;"
+                        aria-label="With textarea"></textarea>
+                </div>
+                
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg btn-block">Send</button>
+        </form>
+    </div>
