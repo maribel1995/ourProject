@@ -41,4 +41,34 @@ $( ".fa-heart" ).click(function() {
   });
 
 
- 
+$(function(){
+    var categories = [];
+
+    $('[data-filter-category]').click(function(e){
+        e.preventDefault();
+
+        var category = $(this).data('filter-category');
+
+        $(this).toggleClass('btn-primary btn-secondary');
+
+        if($(this).hasClass('btn-primary')) {
+            categories.push(category);
+        } else {
+            categories.splice(categories.indexOf(category), 1);
+        }
+
+        filterCategories();
+    });
+
+    function filterCategories() {
+        if(categories.length > 0) {
+            $('[data-category]').hide();
+            
+            categories.forEach(function(category) {
+                $('[data-category=' + category + ']').show();
+            });
+        } else {
+            $('[data-category]').show();
+        }
+    }
+});
