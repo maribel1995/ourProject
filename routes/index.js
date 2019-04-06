@@ -10,6 +10,8 @@ router.get('/', (req, res, next) => {
         .then(products => {
             Product.find().distinct('category')
                 .then(categories => {
+                    categories.sort();
+
                     res.render('index', {
                         products, categories
                     });
