@@ -5,8 +5,6 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 
 router.get("/login", (req, res, next) => {
-  console.log('returnTo', req.session.returnTo);
-
   res.render("auth/login", { 'errorMessage': req.flash('error') });
 });
 
@@ -18,7 +16,8 @@ router.post("/login", passport.authenticate("local", {
   try {
     const { returnTo } = req.session;
     if (typeof returnTo === 'string' && returnTo.startsWith('/')) {
-      return res.redirect(returnTo)
+      delete req.session.returnTo;
+      return res.redirect(returnTo);
     }
   } catch (e) {
     // just redirect normally below
