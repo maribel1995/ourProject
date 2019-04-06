@@ -27,12 +27,19 @@
                        <strong> <a class="nav-link" href="/">iChange</a></strong>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/products">products</a>
+                        <a class="nav-link" href="/products">Products</a>
                     </li>
                      {{#if currentUser}}
                     <li class="nav-item active">
                         <a class="nav-link" href="/users">Users</a>
                     </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/orders">Requests</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/products/add">Add an Ad</a>
+                    </li>
+
                     {{/if}}
                 </ul>
 
@@ -51,12 +58,14 @@
             {{{ body }}}
         </div>
     </main>
-
+    
+    <div class="modal"><!-- Place at bottom of page --></div>
     <footer class="footer mt-auto py-3">
         <div class="container-fluid">
            2019 Copyright -
         </div>
     </footer>
+    
 </body>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -10,6 +10,7 @@
          {{/if}}
         <hr>
         <h2>My Products</h2>
+        <div class="row  m-4">
              {{#each products}}
         <a href="/products/perfil/{{this._id}}">
             <div class="card m-4" style="width: 12rem;">
@@ -25,7 +26,7 @@
             </div>
         </a>
         {{/each}}
-    
+    </div>
      <hr>     
         <h2>Leave a Review</h2>
         <form method="post" action="/user/review">
@@ -55,6 +56,7 @@
   
      <h5><img src="{{this.sender.imageUrl}}" class="userPic" width="35" height="35"/> {{this.sender.name}}</h5>
       <span class="rating">{{this.rating}}.0</span><span class="singleStar">&nbsp;</span><p>{{this.comments}}</p>
+      <small>{{date-format this.createdAt "MMM Do, YYYY"}}</small>
       
     <hr>
     

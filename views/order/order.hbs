@@ -1,0 +1,49 @@
+<div class="box">
+    <div class="container">
+<h1>Exchange Details</h1>
+<strong>Protocol:</strong> {{order.protocol}}
+<p><small class="text-muted">{{date-format order.createdAt "MMM Do, YYYY"}}</small></p>
+<hr>
+<div class="row">
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="{{order.requestedProduct.images.[0]}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title"> {{order.requestedProduct.name}}</h5>
+    <p class="card-text">{{order.requestedProduct.description}}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><strong>Requester:</strong> <a href="/user/{{order.requester._id}}">{{order.requester.name}}</a></li>
+    <li class="list-group-item"><strong>Requester Status:</strong> {{order.requesterStatus}}</li>
+    <li class="list-group-item"><strong>Category:</strong> {{order.requestedProduct.category}}</li>
+  </ul>
+  <div class="card-footer">
+     <small class="text-muted"></small>
+  </div>
+</div>
+<div>
+   <table style="height: 100px;">
+  <tbody>
+    <tr>
+      <td class="align-middle"><i class="fas fa-exchange-alt" style="font-size: 48px;"></i></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="{{order.biderProduct.images.[0]}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title"> {{order.biderProduct.name}}</h5>
+    <p class="card-text">{{order.biderProduct.description}}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><strong>Bider:</strong> <a href="/user/{{order.bider._id}}">{{order.bider.name}}</a></li>
+    <li class="list-group-item"><strong>Bider Status:</strong> {{order.biderStatus}}</li>
+    <li class="list-group-item"><strong>Category:</strong> {{order.biderProduct.category}}</li>
+  </ul>
+  <div class="card-footer">
+     <small class="text-muted"></small>
+  </div>
+</div>
+</div>
+</div>
+</div>

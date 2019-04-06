@@ -141,3 +141,38 @@ body {
     font-size: 20px;
     padding: 1px; /* space out the stars */
   }
+
+  .fa-heart{
+    cursor: pointer;
+  }
+
+  .fa-heart::after{
+    color: red;
+    cursor: pointer;
+  }
+
+  .modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('https://res.cloudinary.com/daniel-donato/image/upload/v1554537433/ichange/ajax-loader.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading .modal {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
