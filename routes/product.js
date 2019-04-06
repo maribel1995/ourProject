@@ -4,11 +4,12 @@ const Product = require('../models/product');
 const Question = require('../models/question');
 const uploadCloud = require('../config/cloudinary.js');
 const ensureLogin = require("connect-ensure-login");
+const Order = require('../models/order');
 
 
 
 router.get('/products', (req, res, next) => {
-    Product.find().populate('owner')
+    Product.find().populate('owner').sort({createdAt:-1})
         .then(products => {
 
             res.render('product/products', {
@@ -98,22 +99,32 @@ router.post('/products/edit', (req, res, next) => {
         });
 });
 
-router.get('/products/perfil/:id', (req, res, next) => {
-    Product.findOne({
-        _id: req.params.id
-    })
-    .populate({
+router.get('/products/perfil/:id',ensureLogin.ensureLoggedIn(), (req, res, next) => {
+
+    let loggedUser = req.user._id;
+
+
+    Product.find({owner:loggedUser}).populate('owner')
+    .then(products =>{
+        Product.findOne({
+            _id: req.params.id
+        })
+      .populate({
         path:'questions',
         populate: {
             path:'user'
         }
     })
-    .then(product => {
-
-        res.render('product/perfil', {
-            product
+        .then(product => {
+    
+            res.render('product/perfil', {
+                product, products
+            })
         })
+        .catch(err => {throw new Error(err)});    
     })
+    .catch(err => {throw new Error(err)});
+    
 })
 
 

@@ -8,7 +8,9 @@ const orderSchema = new Schema({
     requestedProduct: {type: Schema.Types.ObjectId, ref:'Product'},
     biderProduct:{type: Schema.Types.ObjectId, ref:'Product'},
     requester:{type: Schema.Types.ObjectId, ref:'User'},
-    bider:{type: Schema.Types.ObjectId, ref:'User'}
+    bider:{type: Schema.Types.ObjectId, ref:'User'},
+    requesterStatus:{type:String, enum:['Pending','Confirmed','Declined'],default:'Pending'},
+    biderStatus:{type:String, enum:['Pending','Confirmed','Declined','Delivered'],default:'Pending'}
 }, {
   timestamps: true
 });

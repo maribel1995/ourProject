@@ -67,6 +67,12 @@ body {
      width: 35px;
    }
 
+   .userPic{
+    border-radius:50px;
+    height: 35px;
+    width: 35px;
+  }
+
    #userProfile{
     border-radius:50px;
     height: 50px;
@@ -90,3 +96,83 @@ body {
     height: auto;
     min-height: 560px;
   }
+
+  
+
+  .star{
+    color: goldenrod;
+    font-size: 35px;
+    padding: 1px; /* space out the stars */
+  }
+  .star::before{
+    content: '\2606';    /* star outline */
+    cursor: pointer;
+  }
+  .star.rated::before{
+    /* the style for a selected star */
+    content: '\2605';  /* filled star */
+  }
+  
+  .stars{
+      counter-reset: rateme 0;   
+      font-size: 2.0rem;
+      font-weight: 1100;
+  }
+  .star.rated{
+      counter-increment: rateme 1;
+  }
+  /* .stars::after{
+      content: counter(rateme) '/5';
+  } */
+
+  
+  .singleStar{
+    color: goldenrod;
+    font-size: 25px;
+    padding: 1px; /* space out the stars */
+  }
+  .singleStar::before{
+    content: '\2605';    /* star outline */
+    cursor: pointer;
+  }
+
+  .rating{
+    color: goldenrod;
+    font-size: 20px;
+    padding: 1px; /* space out the stars */
+  }
+
+  .fa-heart{
+    cursor: pointer;
+  }
+
+  .fa-heart::after{
+    color: red;
+    cursor: pointer;
+  }
+
+  .modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('https://res.cloudinary.com/daniel-donato/image/upload/v1554537433/ichange/ajax-loader.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading .modal {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}

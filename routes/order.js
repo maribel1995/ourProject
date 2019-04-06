@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer');
 const ensureLogin = require("connect-ensure-login");
 
 
+
 let transporter = nodemailer.createTransport({
     host: process.env.MAILHOST,
     port: process.env.MAILPORT,
@@ -16,16 +17,35 @@ let transporter = nodemailer.createTransport({
     }
   });
 
-router.get('/orders', (req, res, next) => {
-    res.render('order/orders');
+  
+router.get('/orders', ensureLogin.ensureLoggedIn(),(req, res, next) => {
+  Order.find({requester:req.user._id}).populate('requester').populate('bider').populate('requestedProduct').populate('biderProduct')
+  .then( orders =>{
+    res.render('order/orders',{orders});
+  })
+  .catch(err => {throw new Error(err)})
+    
 })
 
 
-router.get('/request/:id', ensureLogin.ensureLoggedIn(), (req,res,next)=>{
-    //let {productId} = req.body;
-    let productId = req.params.id;
+router.get('/order/:id', ensureLogin.ensureLoggedIn(),(req, res, next) => {
+  let orderId = req.params.id;
+  if (!/^[0-9a-fA-F]{24}$/.test(orderId)) return res.status(404).send('not-found');
+  Order.findOne({_id:orderId}).populate('requester').populate('bider').populate('requestedProduct').populate('biderProduct')
+  .then( order =>{
+    res.render('order/order',{order});
+  })
+  .catch(err => {throw new Error(err)})
+    
+});
+
+
+
+router.post('/request', ensureLogin.ensureLoggedIn(), (req,res,next)=>{
+    
+    let { productId, chosenProduct} = req.body;
     if (!/^[0-9a-fA-F]{24}$/.test(productId)) return res.status(404).send('not-found');
-   
+    console.log("Até aqui tudo bem "+chosenProduct);
 
     const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let token = '';
@@ -34,23 +54,28 @@ router.get('/request/:id', ensureLogin.ensureLoggedIn(), (req,res,next)=>{
     }
     let date = new Date();
     let protocol = date.getYear()+(date.getMonth()+1)+date.getDay()+token.toUpperCase();
-    
-    Product.findOne({_id:productId}).populate('owner')
-    .then( product =>{
+    Order.findOne({$and:[{requestedProduct:productId},{biderProduct:chosenProduct}]}).populate('requester').populate('bider').populate('requestedProduct').populate('biderProduct')
+    .then(orderCheck =>{
+      if(orderCheck === null){
+        console.log('Isto é executado '+orderCheck+' requested product'+productId+' chosen'+chosenProduct);
+        Product.findOne({_id:productId}).populate('owner')
+        .then( product =>{
         const newOrder = new Order({
             protocol: protocol,
             requestedProduct:productId,
+            biderProduct:chosenProduct,
             requester:req.user._id,
+            requesterStatus:'Confirmed',
             bider:product.owner
         });
-        console.log(newOrder);
+        // console.log(newOrder);
 
         let emailHTMLBody = req.user.name+` is interested in your product, click here to see some products of your interest <a href="${process.env.APP_HOST}/request/${protocol}">here</a>`;
 
     newOrder.save()
     .then(order => {
       transporter.sendMail({
-        from: '"Ichange" <noreply@ichange.com>',
+        from: '"iChange" <noreply@ichange.com>',
         to: product.owner.email, 
         subject: 'A new person is interested in your '+product.name+' - ichange', 
         // text: message,
@@ -62,11 +87,57 @@ router.get('/request/:id', ensureLogin.ensureLoggedIn(), (req,res,next)=>{
     .catch(err => { throw new Error(err)});
     })
     .catch(err => { throw new Error(err)});
+      }else{
+        console.log("Order Check "+orderCheck);
+        Order.findOneAndUpdate(
+          
+          { _id: orderCheck._id },
+          { $set: {biderStatus:'Confirmed'}} ,
+          { new: true } 
+        )
+        .then(orderUpdate =>{
 
-   
-
+          let emailHTMLBody = req.user.name+` has just accepted your ${orderCheck.biderProduct.name} in exchange of ${orderCheck[0].requestedProduct.name}. See all details at <a href="${process.env.APP_HOST}/order/${orderCheck[0]._id}">here</a>`;
+          transporter.sendMail({
+            from: '"Ichange" <noreply@ichange.com>',
+            to: orderCheck.requester.email, 
+            subject: 'Your Product is a Match! - ichange', 
+            // text: message,
+            html: `<b>${emailHTMLBody}</b>`
+          })
+          .then(info => res.redirect(`/order/${orderCheck._id}`))
+          .catch(err => { throw new Error(err)})
+          
+        })
+        .catch(err=>{throw new Error(err)});
+        // res.redirect(`/orders`);  
+        
+      }
+    })
+    .catch(err => {throw new Error(err)})
 
     
-})
+
+    
+});
+
+
+router.get("/request/delete/:id", ensureLogin.ensureLoggedIn(), (req, res, next) => {
+  let orderId = req.params.id;
+  if (!/^[0-9a-fA-F]{24}$/.test(orderId)) return res.status(404).send('not-found');
+  Order.deleteOne({ _id: orderId })
+    .then(order => {
+      
+        res.redirect("/orders");
+      })
+      .catch(error => {
+        throw new Error(error);
+          
+    })
+    .catch(error => {
+      throw new Error(error);
+  });
+});
+
 
 module.exports = router;

@@ -9,12 +9,33 @@ const path = require('path');
 const siteRoutes = require('./routes/index');
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
+const reviewRoutes = require('./routes/review')
 const passportConfig = require('./config/passport.js');
 const ensureLogin = require("connect-ensure-login");
 const http = require("http");
-
+const moment = require('moment');
 
 const app = express();
+
+hbs.registerHelper('date-format', function(context, format) {
+  if (moment && context !== null && context !== '') {
+      // var format = block.hash.format || "DD-MM-YYYY";
+      return moment(context).format(format);
+  }
+  
+  // Moment not present or the date is empty-ish, show the default value or nothing
+  return (block.hash.default ? block.hash.default : context);
+});
+
+hbs.registerHelper('ifvalue', function (conditional, options) {
+  if (options.hash.value === conditional) {
+    return options.fn(this)
+  } else {
+    return options.inverse(this);
+  }
+});
+
+
 
 //conection mongo
 mongoose
@@ -90,5 +111,7 @@ var question = require('./routes/question');
 app.use('/', question);
 var order = require('./routes/order')
 app.use('/', order);
-var auth = require('./routes/auth')
+var auth = require('./routes/auth');
 app.use('/', auth);
+var review = require('./routes/review');
+app.use('/', review);

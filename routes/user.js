@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const Product = require('../models/product');
+const Review = require('../models/review');
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 const uploadCloud = require('../config/cloudinary.js');
@@ -21,8 +22,9 @@ let transporter = nodemailer.createTransport({
 router.get('/users',ensureLogin.ensureLoggedIn(), (req, res, next) => {
   User.find().sort({status:1})
     .then(users => {
-      
-      res.render("user/users", { users });
+     
+        res.render("user/users", { users });
+     
     })
     .catch(error => {
       throw new Error(error);
@@ -148,7 +150,7 @@ router.get('/confirm/:token', (req, res) => {
   
 
 
-  router.get('/user/:id', (req,res,next) =>{
+  router.get('/user/:id',ensureLogin.ensureLoggedIn(), (req,res,next) =>{
     
     let userId = req.params.id;
     if (!/^[0-9a-fA-F]{24}$/.test(userId)) return res.status(404).send('not-found');
@@ -160,7 +162,20 @@ router.get('/confirm/:token', (req, res) => {
 
         Product.find({owner:userId})
         .then( products =>{
-          res.render("user/profile", { user, loggedUser,products } );
+          Review.find({$and: [{user:userId},{comments: { $ne: "" }}]}).sort({createdAt:-1}).populate('sender')
+          .then(reviews =>{
+          
+            let totalReviews = reviews.reduce(function(a,c){
+              
+              return a += c.rating;              
+            },0);
+            
+            let avgRating = (totalReviews/reviews.length).toFixed(2);
+              
+              res.render("user/profile", { user, loggedUser,products,reviews,avgRating} );
+            })
+            .catch(err => { throw new Error(err)});
+           
         })
         .catch(error => {
           throw new Error(error);
@@ -178,7 +193,7 @@ router.get('/confirm/:token', (req, res) => {
   
     User.findOne({ _id: userId })
       .then(user => {
-        console.log(`${req.user}`);
+        
         if (user._id.equals(req.user._id)) {
           res.render("user/edit", { user });
         } else {
@@ -230,7 +245,7 @@ router.post("/user/edit", ensureLogin.ensureLoggedIn(), uploadCloud.single('imag
     { new: true } 
   )
     .then(user => {
-      console.log(user)
+      
       res.redirect(`/users`);
     })
     .catch(error => {
