@@ -1,7 +1,7 @@
 <div class="container" style="width: 720px;">
     <h2>{{product.name}}</h2>
     <p class="category font-weight-bold">{{product.category}}</p>
-    {{#if loggedUser}}
+    {{#if authUser}}
         <a href="/products/edit/{{product._id}}" class="btn btn-secondary btn-sm">Edit Product</a>
          <a href="/products/delete/{{product._id}}" class="btn btn-danger btn-sm">Delete Product</a>
     {{/if}}
@@ -31,6 +31,7 @@
         <div class="product-infos">
             <p class="font-weight-bold">Description:</p>
             <p>{{product.description}}</p>
+            {{#unless authUser}}
             {{#if products}}
             <form action="/request" method="post">
                 <div class="form-group">
@@ -50,6 +51,7 @@
             {{else}}
             Do you want this product? <a href="/products/add">Create a product first</a>
             {{/if}}
+            {{/unless}}
         </div>
     </div>
    

@@ -24,7 +24,7 @@ router.get('/products',ensureLogin.ensureLoggedIn(), (req, res, next) => {
         })
 });
 
-router.get('/products/add', (req, res, next) => {
+router.get('/products/add',ensureLogin.ensureLoggedIn(), (req, res, next) => {
     res.render('product/add');
 });
 
@@ -60,7 +60,7 @@ router.post('/products/add',ensureLogin.ensureLoggedIn(), uploadCloud.array('pho
         });
 });
 
-router.get('/products/edit/:id', (req, res, next) => {
+router.get('/products/edit/:id',ensureLogin.ensureLoggedIn(), (req, res, next) => {
     Product.findOne({
             _id: req.params.id
         })
@@ -72,7 +72,7 @@ router.get('/products/edit/:id', (req, res, next) => {
         })
 });
 
-router.post('/products/edit', (req, res, next) => {
+router.post('/products/edit',ensureLogin.ensureLoggedIn(), (req, res, next) => {
     const {
         name,
         description,
@@ -119,9 +119,10 @@ router.get('/products/perfil/:id',ensureLogin.ensureLoggedIn(), (req, res, next)
         }
     })
         .then(product => {
-    
+            let authUser = req.user._id.equals(product.owner);
+            console.log(authUser);
             res.render('product/perfil', {
-                product, products, loggedUser
+                product, products, authUser
             })
         })
         .catch(err => {throw new Error(err)});    

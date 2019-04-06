@@ -33,7 +33,11 @@ router.get('/users',ensureLogin.ensureLoggedIn(), (req, res, next) => {
 
 
 router.get('/user/add', (req,res,next)=>{
-    res.render('user/add');
+    res.render('auth/confirmEmail');
+})
+
+router.get('/user/confirmEmail', (req,res,next)=>{
+  res.render('user/add');
 })
 
 
@@ -97,7 +101,7 @@ router.post("/user/add",  uploadCloud.single('imageUrl'), (req, res, next) => {
           // text: message,
           html: `<b>${emailHTMLBody}</b>`
         })
-        .then(info => res.redirect('/'))
+        .then(info => res.redirect('/user/confirmEmail'))
         .catch(err => { throw new Error(err)})
       })
       .catch(err => { throw new Error(err)});
