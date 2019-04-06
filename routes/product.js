@@ -8,8 +8,8 @@ const Order = require('../models/order');
 
 
 
-router.get('/products', (req, res, next) => {
-    Product.find().populate('owner').sort({createdAt:-1})
+router.get('/products',ensureLogin.ensureLoggedIn(), (req, res, next) => {
+    Product.find({owner:{$ne:req.user._id}}).populate('owner').sort({createdAt:-1})
         .then(products => {
 
             res.render('product/products', {
