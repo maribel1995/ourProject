@@ -5,3 +5,33 @@
       
   </video>
 </div>
+
+<div class="container mt-5">
+    <h1>Products</h1>
+
+    {{#each categories}}
+        <button type="button" class="btn btn-sm btn-secondary" data-filter-category="{{this}}">{{this}}</button>
+    {{/each}}
+
+    <hr>
+    <div class="d-flex p-2 flex-wrap">
+        {{#each products}}
+        
+            <div class="card m-4" style="width: 12rem;" data-category="{{this.category}}">
+                <div class="card-img-top"
+                    style="background-image:url({{this.images.[0]}}); background-size: cover; width: 12rem; height: 120px;">
+                </div>
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div> <a href="/products/perfil/{{this._id}}"><p class="card-text">{{this.name}}</a></div>
+                        <i class="fas fa-heart" style="font-size: 18px;color: #999999;"></i>
+                    </div>
+                    <p class="card-text">{{this.category}}</p>
+                    <p class="card-text"><a href="/user/{{this.owner._id}}">{{this.owner.name}}</a></p>
+                </div>
+            </div>
+        
+        {{/each}}
+    </div>
+</div>
