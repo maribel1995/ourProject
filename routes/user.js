@@ -33,7 +33,7 @@ router.get('/users',ensureLogin.ensureLoggedIn(), (req, res, next) => {
 
 
 router.get('/user/add', (req,res,next)=>{
-    res.render('auth/confirmEmail');
+    res.render('user/add');
 })
 
 router.get('/user/confirmEmail', (req,res,next)=>{

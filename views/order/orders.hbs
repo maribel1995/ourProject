@@ -86,21 +86,27 @@
               <tr>
                 <th scope="row"><a href="/order/{{this._id}}">{{this.protocol}}</a></th>
                 <td>{{date-format this.createdAt "MMM Do, YYYY"}}</td>
-                <td><a href="/products/perfil/{{this.requestedProduct._id}}"><img
-                      src="{{this.requestedProduct.images.[0]}}" width="25"
-                      height="25" />{{this.requestedProduct.name}}</a></td>
-                <td><a href="/user/{{this.bider._id}}">{{this.bider.name}}</a></td>
-                <td><img src="{{this.biderProduct.images.[0]}}" width="25" height="25" />{{this.biderProduct.name}}</td>
-                <td>{{this.biderStatus}}</td>
+                <td><a href="/products/perfil/{{this.biderProduct._id}}"><img
+                      src="{{this.biderProduct.images.[0]}}" width="25"
+                      height="25" />{{this.biderProduct.name}}</a></td>
+                <td><a href="/user/{{this.requester._id}}">{{this.requester.name}}</a></td>
+                <td><img src="{{this.requestedProduct.images.[0]}}" width="25" height="25" />{{this.requesterProduct.name}}</td>
+                <td>{{this.status}}</td>
                 <td>
                   {{#ifvalue this.biderStatus value="Pending"}}
-                  <form><button role="button" type="submit" formaction="/request/delete/{{this._id}}"
-                      class="btn btn-danger">Delete</button></form>
+                  <form><button role="button" type="submit" formaction="/request/accept/{{this._id}}"
+                      class="btn btn-success">Accept</button>
+                      <button role="button" type="submit" formaction="/request/decline/{{this._id}}"
+                      class="btn btn-danger">Decline</button>
+                      </form>
                   {{/ifvalue}}
                   {{#ifvalue this.biderStatus value="Confirmed"}}
                   <form><button role="button" type="submit" formaction="/request/shipping/{{this._id}}"
                       class="btn btn-success">Ship Mode</button></form>
                   {{/ifvalue}}
+                   {{#ifvalue this.biderStatus value="Declined"}}
+                   Declined
+                   {{/ifvalue}}
                 </td>
               </tr>
               {{/each}}
@@ -128,6 +134,28 @@
             <tbody>
               {{#if orders}}
               {{#each orders}}
+              {{#if loggedUser}}
+              <tr>
+                <th scope="row"><a href="/order/{{this._id}}">{{this.protocol}}</a></th>
+                <td>{{date-format this.createdAt "MMM Do, YYYY"}}</td>
+                <td><a href="/products/perfil/{{this.biderProduct._id}}"><img
+                      src="{{this.biderProduct.images.[0]}}" width="25"
+                      height="25" />{{this.biderProduct.name}}</a></td>
+                <td><a href="/user/{{this.requester._id}}">{{this.requester.name}}</a></td>
+                <td><img src="{{this.requesterProduct.images.[0]}}" width="25" height="25" />{{this.requesterProduct.name}}</td>
+                <td>{{this.requesterStatus}}</td>
+                <td>
+                  {{#ifvalue this.requesterStatus value="Pending"}}
+                  <form><button role="button" type="submit" formaction="/request/delete/{{this._id}}"
+                      class="btn btn-danger">Delete</button></form>
+                  {{/ifvalue}}
+                  {{#ifvalue this.requesterStatus value="Confirmed"}}
+                  <form><button role="button" type="submit" formaction="/request/shipping/{{this._id}}"
+                      class="btn btn-success">Ship Mode</button></form>
+                  {{/ifvalue}}
+                </td>
+              </tr>
+              {{else}}
               <tr>
                 <th scope="row"><a href="/order/{{this._id}}">{{this.protocol}}</a></th>
                 <td>{{date-format this.createdAt "MMM Do, YYYY"}}</td>
@@ -148,6 +176,7 @@
                   {{/ifvalue}}
                 </td>
               </tr>
+              {{/if}}
               {{/each}}
               {{else}}
               <td colspan="7"><em>No Requests</em></td>

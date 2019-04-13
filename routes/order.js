@@ -19,12 +19,17 @@ let transporter = nodemailer.createTransport({
 
 
 router.get('/orders', ensureLogin.ensureLoggedIn(), (req, res, next) => {
-  Order.find({ $or: [{ requester: req.user._id }, { bider: req.user._id }] }).populate('requester').populate('bider').populate('requestedProduct').populate('biderProduct')
+  
+  let loggedUser = req.user._id.equals(req.user._id);
+  let sent, received = [];
+  Order.find({ $or: [{ requester: req.user._id }, { bider: req.user._id }] }).populate('requester').populate('bider').populate('requestedProduct').populate('biderProduct').sort({updatedAt:-1})
     .then(orders => {
-      let sent = orders.filter(item => item.requester._id.equals(req.user._id));
-      let received = orders.filter(item => item.bider._id.equals(req.user._id));
+      sent = orders.filter(item => item.requester._id.equals(req.user._id));
+     received = orders.filter(item => item.bider._id.equals(req.user._id));
+      
+      
 
-      res.render('order/orders', { sent, received, orders });
+      res.render('order/orders', { sent, received, orders, loggedUser });
     })
     .catch(err => { throw new Error(err) })
 
@@ -62,7 +67,7 @@ router.post('/request', ensureLogin.ensureLoggedIn(), (req, res, next) => {
       { $and: [{ requestedProduct: productId }, { biderProduct: chosenProduct }] },
       { $and: [{ requestedProduct: chosenProduct }, { biderProduct: productId }] }
     ]
-  }).populate('requester').populate('bider').populate('requestedProduct').populate('biderProduct')
+  }).populate('requester').populate('bider').populate('requestedProduct').populate('biderProduct').sort({updatedAt:-1})
     .then(orderCheck => {
       if (orderCheck === null) {
         console.log('Isto é executado ' + orderCheck + ' requested product' + productId + ' chosen' + chosenProduct);
@@ -134,6 +139,49 @@ router.post('/request', ensureLogin.ensureLoggedIn(), (req, res, next) => {
 
 });
 
+router.get("/request/accept/:id", ensureLogin.ensureLoggedIn(), (req, res, next) => {
+  let orderId = req.params.id;
+  let updateData = {
+    biderStatus : "Confirmed",
+    status: "Match"
+  }
+
+  if (!/^[0-9a-fA-F]{24}$/.test(orderId)) return res.status(404).send('not-found');
+  Order.findOneAndUpdate({ _id: orderId },{$set: updateData} ,{ new: true })
+    .then(order => {
+
+      res.redirect(`/order/${orderId}`);
+    })
+    .catch(error => {
+      throw new Error(error);
+
+    })
+    .catch(error => {
+      throw new Error(error);
+    });
+});
+
+router.get("/request/decline/:id", ensureLogin.ensureLoggedIn(), (req, res, next) => {
+  let orderId = req.params.id;
+  let updateData = {
+    biderStatus : "Declined",
+    status: "Declined"
+  }
+
+  if (!/^[0-9a-fA-F]{24}$/.test(orderId)) return res.status(404).send('not-found');
+  Order.findOneAndUpdate({ _id: orderId },{$set: updateData} ,{ new: true })
+    .then(order => {
+
+      res.redirect(`/order/${orderId}`);
+    })
+    .catch(error => {
+      throw new Error(error);
+
+    })
+    .catch(error => {
+      throw new Error(error);
+    });
+});
 
 router.get("/request/delete/:id", ensureLogin.ensureLoggedIn(), (req, res, next) => {
   let orderId = req.params.id;

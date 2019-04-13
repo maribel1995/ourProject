@@ -10,64 +10,111 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <script src="https://maps.googleapis.com/maps/api/js?key={{GMAPS}}"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>  
-  
+  <link href="https://fonts.googleapis.com/css?family=Muli|Raleway:800|Roboto+Mono|Nunito" rel="stylesheet">
   
 </head>
 <body class="d-flex flex-column h-100">
 
     <main class="flex-shrink-0">
         {{!-- <div class="container"> --}}
-        <nav class="navbar navbar-expand-lg navbar-dark">
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+            <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item {{#if pageHome}}active{{/if}}">
-                       <strong> <a class="nav-link" href="/">iChange</a></strong>
+                      <a href="/" class="logo"><img src="/imgs/ichange.png" class="imgLogo"/>   <h3>iChange </h3></a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/products">My Products</a>
+                    <li class="nav-item active ">
+                        <input type="text" name="search" id="search" class="form-control"/>
+                        <ul class="list-group" id="result">
+
+                        </ul>
                     </li>
-                    {{#if admin}}
-                    <li class="nav-item active">
+                 </ul>
+                <div class="mt-2 mt-md-0">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active underline">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                         {{#if admin}}
+                    <li class="nav-item active underline">
                         <a class="nav-link" href="/users">Users</a>
                     </li>
                     {{/if}}
                      {{#if currentUser}}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/orders">Requests</a>
+                      <li class="nav-item active underline">
+                        <a class="nav-link " href="/products">My Products</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item active underline">
+                        <a class="nav-link " href="/orders">Requests</a>
+                    </li>
+                    <li class="nav-item active  underline">
                         <a class="nav-link" href="/products/add">Add an Ad</a>
                     </li>
 
                     {{/if}}
-                </ul>
-
-                <div class="mt-2 mt-md-0">
+                    <li class="nav-item active userInfo">
                     {{#if currentUser}}
                         Hey, <a href='/user/{{currentUser._id}}'>{{ currentUser.name }}</a> <img src='{{currentUser.imageUrl}}' id='userPic'>
-                        <a href="/logout" class="btn btn-danger btn-sm ml-2">logout</a>
+                        <a href="/logout" class="btn btn-danger btn-md ml-2">Logout</a>
                     {{else}}
-                        <a href="/login" class="btn btn-success btn-sm">login</a>
+                        <a href="/login" class="btn btn-secondary btn-md">Login</a>
                     {{/if}}
+                    </li>
+                    </ul>
                 </div>
             </div>
+            </div>
         </nav>
+       
         {{!-- </div> --}}
+        <div class="container-fluid body-container">
         <div id="app">
             {{{ body }}}
         </div>
-    </main>
+        
     
+     </main>
     <div class="modal"><!-- Place at bottom of page --></div>
     <footer class="footer mt-auto py-3">
-        <div class="container-fluid">
-           2019 Copyright -
+        <div class="container-fluid sub-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <h4>Because you change!</h4>
+                        <ul class="social">
+                            <li><a href="#"><i class="fab fa-facebook-f" style="font-size: 28px;"></i></a></li>
+                            <li><a href="#"><i class="fab fa-instagram" style="font-size: 28px;"></i></a></li>
+                            <li><a href="#"><i class="fab fa-youtube" style="font-size: 28px;"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <h4>Careers</h4>
+                        <ul>
+                            <li><a href="#">Work with us</a></li>
+                            <li><a href="#">Culture</a></li>
+                            <li><a href="#">About US</a></li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <h4>Produto</h4>
+                        <ul>
+                            <li><a href="#">Security Tips</a></li>
+                            <li><a href="#">Terms</a></li>
+                            <li><a href="#">Help & Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>            
+        </div>
+        <div class="container">
+           <p>2018 - 2019 &copy; - ichange.com</p>
         </div>
     </footer>
-    
+    </div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

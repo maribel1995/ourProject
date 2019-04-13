@@ -3,7 +3,7 @@ const Schema   = mongoose.Schema;
 
 const orderSchema = new Schema({
     protocol: String,
-    status: {type:String, enum:['Pending','Match','Canceled'],default:'Pending'},
+    status: {type:String, enum:['Pending','Match','Declined'],default:'Pending'},
     transporter: String,
     requestedProduct: {type: Schema.Types.ObjectId, ref:'Product'},
     biderProduct:{type: Schema.Types.ObjectId, ref:'Product'},

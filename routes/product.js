@@ -119,7 +119,7 @@ router.get('/products/perfil/:id',ensureLogin.ensureLoggedIn(), (req, res, next)
         }
     }).populate('owner')
         .then(product => {
-            let authUser = req.user._id.equals(product.owner);
+            let authUser = req.user._id.equals(product.owner._id);
             console.log(authUser);
             res.render('product/perfil', {
                 product, products, authUser

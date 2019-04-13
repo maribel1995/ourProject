@@ -1,13 +1,19 @@
+
+<div class="parallax">
+    
+    <p class="banner-text">Life is about changing, <br/>find what <br/> you`re looking for!<br/><button class='btn btn-light'>Find out More </button></p>
+    
+    
+</div>
 <div class="container">
-  <video muted='muted' autoplay="autoplay" loop="loop" class="video">
+  {{!-- <video muted='muted' autoplay="autoplay" loop="loop" class="video">
 
       <source src="https://d150hyw1dtprld.cloudfront.net/videos/HP_VideoTest_NoPostRoll_v2_720p.webm" type="video/webm">
       
-  </video>
+  </video> --}}
 </div>
-
 <div class="container my-5">
-    <h1>Products</h1>
+    <h1 class="home-products">Find what you need now!</h1>
 
     {{#each categories}}
         <button type="button" class="btn btn-sm btn-secondary" data-filter-category="{{this}}">{{this}}</button>
@@ -17,9 +23,9 @@
     <div class="d-flex p-2 flex-wrap">
         {{#each products}}
         
-            <div class="card m-4" style="width: 12rem;" data-category="{{this.category}}">
+            <div class="card m-4" style="width: 13rem;" data-category="{{this.category}}">
                 <div class="card-img-top"
-                    style="background-image:url({{this.images.[0]}}); background-size: cover; width: 12rem; height: 120px;">
+                    style="background-image:url({{this.images.[0]}}); background-size: cover; width: 12.9rem; height: 200px;">
                 </div>
 
                 <div class="card-body">

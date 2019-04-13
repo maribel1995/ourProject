@@ -1,6 +1,7 @@
 <div class="container" style="width: 720px;">
     <h2>{{product.name}}</h2>
     <p class="category font-weight-bold">{{product.category}}</p>
+    <p ><a href="/user/{{product.owner._id}}">{{product.owner.name}}</a></p>
     {{#if authUser}}
         <a href="/products/edit/{{product._id}}" class="btn btn-secondary btn-sm">Edit Product</a>
          <a href="/products/delete/{{product._id}}" class="btn btn-danger btn-sm">Delete Product</a>
@@ -12,8 +13,8 @@
                 <div class="carousel-inner">
                     {{#each product.images}}
                     <div class="carousel-item {{#if @first}}active{{/if}}">
-                        <div class="card-img-top m-2 p-2"
-                            style="background-image:url({{this}}); background-size: cover; width: 20rem; height: 13rem;">
+                        <div class="card-img-bottom m-2 p-2"
+                            style="background-image:url({{this}}); background-size: cover; width: 20rem; height: 20rem;">
                         </div>
                     </div>
                     {{/each}}

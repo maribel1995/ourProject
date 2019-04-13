@@ -1,29 +1,137 @@
 body {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding-top: 70px;
+    background:#FCFCFC;
+    font-family: 'Nunito', sans-serif;
   }
+
+  .parallax{
+    background: url("../imgs/banner6.jpg") no-repeat bottom;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 500px;
+    vertical-align: middle !important;
+
+  }
+
+
+  .card-body div a {
+    color:#282D33;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .banner-text{
+    font-size: 4vw;
+    color:#fff;
+    font-family: 'Raleway', sans-serif;
+    vertical-align: middle !important;
+    padding: 65px; 
+    
+  }
+
   
   .navbar {
-    background-color: #2e2e2e;
-    color: #FFF;
+    background-color: #FFF;
+    color: #2e2e2e;
+    border-bottom:solid 1px #E4E4E4;
   }
-  
-  .navbar-dark .navbar-nav .nav-link {
-    color: #FFF;
+
+  .imgLogo{
+    width:30px;
+    height: 30px;
   }
-  
-  .navbar-dark .navbar-nav .nav-active .nav-link {
+
+  .logo{
+    color:#282D33;
+    
+  }
+  .logo a{
+    text-decoration: none;
+  }
+
+
+  .home-products{
+    text-align: center;
+    color:#282D33;
+  }
+
+  .navbar-light .navbar-nav .nav-link {
+    color: #2e2e2e !important;
+    font-weight: bold !important;
+    font-size: 1.1rem;
+  }
+  .navbar-light .navbar-nav .nav-active .nav-link {
     font-weight: bold;
   }
+
+  .userInfo{
+    font-size: 1.1rem;
+  }
+
+ul li{
+  margin:auto;
+  margin-right:10px;
+}
+
+.underline:hover{
+  border-bottom: solid 2px #2e2e2e;
+}
   
   footer {
-    background: #2e2e2e;
+    background: #30363D;
     bottom: 0;
     color: #F7F9F9;
     left: 0;
-    position: fixed;
+    /* position: fixed; */
     width: 100%;
   }
-  
+
+  footer .container-fluid{
+    margin-top: -13px;
+  }
+
+  footer .container p{
+    text-align: center;
+    margin-top: 30px;
+    font-family: Roboto;
+    font-size: 1.2rem;
+  }
+
+  .sub-footer{
+    background: #282D33;
+  }
+
+  .sub-footer ul li{
+    padding: 10px;
+  }
+
+  .sub-footer ul li a{
+    color:#fff;
+    text-decoration: none;
+    font-family: Roboto;
+    font-size: 1.1rem;
+  }
+
+  .sub-footer h4{
+    margin-top: 30px;
+  }
+
+  .social{
+    display: flex;
+    padding: 30px;
+  }
+
+  .col ul li{
+    list-style-type: none;
+  }
+
+
+  .body-container{
+    position: relative;
+    min-height: 100vh;
+  }
   #app {
     padding: 30px 0;
   }

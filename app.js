@@ -14,6 +14,12 @@ const passportConfig = require('./config/passport.js');
 const ensureLogin = require("connect-ensure-login");
 const http = require("http");
 const moment = require('moment');
+const Nexmo = require('nexmo');
+
+const nexmo = new Nexmo({
+  apiKey: process.env.NEXMO_KEY,
+  apiSecret: process.env.NEXMO_SECRET,
+});
 
 const app = express();
 
@@ -115,3 +121,5 @@ var auth = require('./routes/auth');
 app.use('/', auth);
 var review = require('./routes/review');
 app.use('/', review);
+var api = require('./routes/api');
+app.use('/', api);
