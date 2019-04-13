@@ -37,7 +37,7 @@ router.get('/user/add', (req,res,next)=>{
 })
 
 router.get('/user/confirmEmail', (req,res,next)=>{
-  res.render('user/add');
+  res.render('auth/confirmEmail');
 })
 
 
